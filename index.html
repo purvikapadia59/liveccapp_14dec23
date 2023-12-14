@@ -1,0 +1,49 @@
+<html>
+<head>
+	<title> Live CC App by PK </title>
+	<style>
+		*{font-size:50px;}
+		body{background-color:azure;}
+		h2 {border-style:ridge; width:60%; border-radius:30px;}
+	</style>
+	<script>
+		function getrate()
+		{
+			event.preventDefault();
+			let dollar=document.getElementById("dollar");
+			let ans=document.getElementById("ans");
+
+			if(dollar.value == "")
+			{
+				alert("input is empty")
+				ans.innerHTML="";
+				dollar.focus();
+				return;
+			}			
+
+			let url="https://api.exchangerate-api.com/v4/latest/USD";
+			fetch(url)
+			.then(res => res.json())
+			.then(data => {
+				let d = parseFloat(dollar.value);
+				let r = data.rates.INR;
+				let rupees = d * r;
+				let msg = "&#8377 " + rupees.toFixed(2);
+				ans.innerHTML = msg; 
+			})
+			.catch(err => alert ("issue " + err));
+		}
+	</script>
+</head>
+<body>
+<center>
+	<h1> Live Currency Converter </h1>
+	<form onsubmit="getrate()">
+		<input type="number" step=".01" placeholder="enter amt in $" id="dollar"/>
+		<br/><br/>
+		<input type="submit" value="Convert"/>
+	</form>
+	<h2 id="ans"/>
+</center>
+</body>
+</html>
